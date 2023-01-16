@@ -1,7 +1,51 @@
 @echo off
+
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 
+:: Stop Edge Task
+taskkill /im "msedge.exe" /f  >nul 2>&1
 
+
+:: Uninstall - Edge
+if exist "C:\Program Files (x86)\Microsoft\Edge\Application\" (
+for /f "delims=" %%a in ('dir /b "C:\Program Files (x86)\Microsoft\Edge\Application\"') do (
+cd /d "C:\Program Files (x86)\Microsoft\Edge\Application\%%a\Installer\" >nul 2>&1
+if exist "setup.exe" (
+set "EXIST=1"
+echo - Removing Microsoft Edge
+start /w setup.exe --uninstall --system-level --force-uninstall)
+))
+
+:: Uninstall - EdgeWebView
+if exist "C:\Program Files (x86)\Microsoft\EdgeWebView\Application\" (
+for /f "delims=" %%a in ('dir /b "C:\Program Files (x86)\Microsoft\EdgeWebView\Application\"') do (
+cd /d "C:\Program Files (x86)\Microsoft\EdgeWebView\Application\%%a\Installer\" >nul 2>&1
+if exist "setup.exe" (
+echo - Removing EdgeWebView
+start /w setup.exe --uninstall --msedgewebview --system-level --force-uninstall)
+))
+
+
+:: Delete Edge desktop icon, from all users
+for /f "delims=" %%a in ('dir /b "C:\Users"') do (
+del /S /Q "C:\Users\%%a\Desktop\edge.lnk" >nul 2>&1
+del /S /Q "C:\Users\%%a\Desktop\Microsoft Edge.lnk" >nul 2>&1)
+
+:: Delete additional files
+if exist "C:\Windows\System32\MicrosoftEdgeCP.exe" (
+for /f "delims=" %%a in ('dir /b "C:\Windows\System32\MicrosoftEdge*"') do (
+takeown /f "C:\Windows\System32\%%a" > NUL 2>&1
+icacls "C:\Windows\System32\%%a" /inheritance:e /grant "%UserName%:(OI)(CI)F" /T /C > NUL 2>&1
+del /S /Q "C:\Windows\System32\%%a" > NUL 2>&1))
+
+
+
+:: ----------------------------------------------------------
+:: ------------Remove Meet Now icon from taskbar-------------
+:: ----------------------------------------------------------
+echo --- Remove Meet Now icon from taskbar
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
+:: ----------------------------------------------------------
 
 
 :: ----------------------------------------------------------
@@ -72,5 +116,11 @@ PowerShell -ExecutionPolicy Unrestricted -Command "$package = Get-AppxPackage -A
 :: ----------------------------------------------------------
 
 
+:: ----------------------------------------------------------
+:: -------------Uninstall Edge (chromium-based)--------------
+:: ----------------------------------------------------------
+echo --- Uninstall Edge (chromium-based)
+PowerShell -ExecutionPolicy Unrestricted -Command "$installer = (Get-ChildItem "^""$env:ProgramFiles*\Microsoft\Edge\Application\*\Installer\setup.exe"^""); if (!$installer) {; Write-Host 'Could not find the installer'; } else {; & $installer.FullName -Uninstall -System-Level -Verbose-Logging -Force-Uninstall; }"
+:: ----------------------------------------------------------
 
-exit /b 0
+exit

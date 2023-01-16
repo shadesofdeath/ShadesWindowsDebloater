@@ -7,6 +7,11 @@ import time
 import subprocess
 
 app_list = {
+    "Clipchamp":"files\_Clipchamp.bat",
+    "Microsoft Teams":"files\_teams.bat",
+    "Microsoft Todos":"files\_todos.bat",
+    "Cortana":"files\_cortana.bat",
+    "Communication Apps":"files\_communityapps.bat",
     "Advertising App":"files\_advertisingapp.bat",
     "Alarms and Clock":"files\_alarmsclock.bat",
     "App Conector":"files\_appconnector.bat",
@@ -96,8 +101,6 @@ def apply_changes():
     for app, var in checkboxes:
         if var.get():
             subprocess.Popen(app_list[app], creationflags=subprocess.CREATE_NO_WINDOW)
-            time.sleep(5) # timer için 5 saniye bekle
-    simpledialog.messagebox.showinfo("Shades Windows Debloater!","Process completed!")
 
 for i, app in enumerate(app_list):
     var = tk.IntVar()
