@@ -60,11 +60,11 @@ app_list = {
 }
 
 WINDOW_TITLE = "Shades Windows Debloater - Windows 10/11"
-WINDOW_MINSIZE = (850, 440)
+WINDOW_MINSIZE = (900, 450)
 WINDOW_POSITION = (500, 250)
 root = tk.Tk()
 root.overrideredirect(True)
-root.maxsize(850, 440)
+root.maxsize(900, 450)
 root.minsize(WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 root.geometry(str(WINDOW_MINSIZE[0]) + "x" + str(WINDOW_MINSIZE[1]) + "+" + str(WINDOW_POSITION[0]) + "+" + str(WINDOW_POSITION[1]))
 root.title(WINDOW_TITLE)
@@ -88,11 +88,15 @@ app_frame.pack()
 
 checkboxes = []
 
+def toggle_all():
+    for _, var in checkboxes:
+        var.set(not var.get())
+
 def apply_changes():
     for app, var in checkboxes:
         if var.get():
             subprocess.Popen(app_list[app], creationflags=subprocess.CREATE_NO_WINDOW)
-            time.sleep(5) # timer için 3 saniye bekle
+            time.sleep(5) # timer için 5 saniye bekle
     simpledialog.messagebox.showinfo("Shades Windows Debloater!","Process completed!")
 
 for i, app in enumerate(app_list):
@@ -100,15 +104,22 @@ for i, app in enumerate(app_list):
     checkbox = ttk.Checkbutton(app_frame, text=app, variable=var)
     checkbox.grid(row=i//5, column=i%5, sticky="w")
     checkboxes.append((app, var))
+    
+grid_frame = ttk.Frame(big_frame)
+grid_frame.pack()
+grid_frame.columnconfigure(0, minsize=150)
+grid_frame.columnconfigure(1, minsize=150)
+grid_frame.columnconfigure(2, minsize=190)
 
-apply_button = ttk.Button(app_frame, text="Apply", command=apply_changes)
-apply_button.grid(row=(len(app_list)//5)+1, column=0, columnspan=5, pady=10)
+apply_button = ttk.Button(grid_frame, text="Apply", command=apply_changes)
+apply_button.grid(row=1, column=0, columnspan=1, padx=40, pady=40)
 
-# Content goes here, with master = big_frame
-button = ttk.Button(big_frame, text="Change theme!", command=change_theme)
-button.pack()
+toggle_all_button = ttk.Button(grid_frame, text="Select All", command=toggle_all)
+toggle_all_button.grid(row=1, column=1, columnspan=1, padx=40, pady=40)
+
+button = ttk.Button(grid_frame, text="Change theme!", command=change_theme)
+button.grid(row=1, column=2, columnspan=1, padx=40, pady=40)
+
 
 big_frame.pack(fill="both", expand=True)
 root.mainloop()
-
-   
