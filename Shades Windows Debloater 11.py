@@ -60,15 +60,14 @@ app_list = {
 }
 
 WINDOW_TITLE = "Shades Windows Debloater - Windows 10/11"
-WINDOW_MINSIZE = (850, 480)
+WINDOW_MINSIZE = (850, 440)
 WINDOW_POSITION = (500, 250)
 root = tk.Tk()
 root.overrideredirect(True)
-root.maxsize(850, 480)
+root.maxsize(850, 440)
 root.minsize(WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 root.geometry(str(WINDOW_MINSIZE[0]) + "x" + str(WINDOW_MINSIZE[1]) + "+" + str(WINDOW_POSITION[0]) + "+" + str(WINDOW_POSITION[1]))
 root.title(WINDOW_TITLE)
-
 
 root.tk.call("source", "tema/sun-valley.tcl")
 root.tk.call("set_theme", "dark")
@@ -108,7 +107,6 @@ apply_button.grid(row=(len(app_list)//5)+1, column=0, columnspan=5, pady=10)
 # Content goes here, with master = big_frame
 button = ttk.Button(big_frame, text="Change theme!", command=change_theme)
 button.pack()
-
 
 big_frame.pack(fill="both", expand=True)
 root.mainloop()
