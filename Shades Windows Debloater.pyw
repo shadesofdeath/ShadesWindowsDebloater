@@ -114,7 +114,7 @@ grid_frame.columnconfigure(0, minsize=150)
 grid_frame.columnconfigure(1, minsize=150)
 grid_frame.columnconfigure(2, minsize=190)
 
-apply_button = ttk.Button(grid_frame, text="Apply", command=apply_changes)
+apply_button = ttk.Button(grid_frame, text="Debloat", command=apply_changes)
 apply_button.grid(row=1, column=0, columnspan=1, padx=40, pady=40)
 
 toggle_all_button = ttk.Button(grid_frame, text="Select All", command=toggle_all)
