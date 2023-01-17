@@ -7,68 +7,59 @@ import time
 import subprocess
 
 app_list = {
-    "Clipchamp":"files\_Clipchamp.bat",
-    "Microsoft Teams":"files\_teams.bat",
-    "Microsoft Todos":"files\_todos.bat",
-    "Cortana":"files\_cortana.bat",
-    "Communication Apps":"files\_communityapps.bat",
-    "Advertising App":"files\_advertisingapp.bat",
-    "Alarms and Clock":"files\_alarmsclock.bat",
-    "App Conector":"files\_appconnector.bat",
-    "3D Builder":"files\_builder3d.bat",
-    "Calculator":"files\_calculator.bat",
-    "Camera":"files\_camera.bat",
-    "App Installer":"files\_DesktopAppInstaller.bat",
-    "Feedback Hub":"files\_feedbackhub.bat",
-    "Get Help":"files\_GetHelp.bat",
-    "Groove Music":"files\_groove.bat",
-    "Group Me":"files\_groupme.bat",
-    "HEIF Image Extensions":"files\_HEIF.bat",
-    "Mail and Calendar":"files\_mailcalendar.bat",
-    "Microsoft Maps":"files\_maps.bat",
-    "Microsoft Messaging":"files\_Messaging.bat",
-    "Microsoft To Do":"files\_microsofttodo.bat",
-    "Mixed Reality":"files\_mixedreality.bat",
-    "Mobile Plans":"files\_mobileplans.bat",
-    "Microsoft Money":"files\_money.bat",
-    "Movies And TV":"files\_movies.bat",
-    "My Office":"files\_myoffice.bat",
-    "Network Speed Test":"files\_networkspeedtest.bat",
-    "Microsoft News":"files\_news.bat",
-    "OneDrive":"files\_onedrive.bat",
-    "OneNote":"files\_onenote.bat",
-    "Paint 3D":"files\_paint.bat",
-    "Microsft Pay":"files\_advertisingapp.bat",
-    "Microsft People":"files\_people.bat",
-    "Microsft Photos":"files\_photos.bat",
-    "Print 3D":"files\_print.bat",
-    "Store Purchase":"files\_purchase.bat",
-    "Remote Desktop":"files\_remotedesktop.bat",
-    "Skype":"files\_skype.bat",
-    "Snip & Sketch":"files\_snipsketch.bat",
-    "Solitaire Collection":"files\_soiltare.bat",
-    "MSN Sports":"files\_sports.bat",
-    "Spotify":"files\_spotify.bat",
-    "Sticky Notes":"files\_stickynotes.bat",
-    "Microsoft Store":"files\_store.bat",
-    "Microsoft Sway":"files\_sway.bat",
-    "Microsoft Tips":"files\_Tips.bat",
-    "3D Viewer":"files\_viewer3d.bat",
-    "Voice Recorder":"files\_voicerecorder.bat",
-    "VP9 Video Extensions":"files\_vp9.bat",
-    "MSN Weather":"files\_weather.bat",
-    "Web Media Extensions":"files\_webextensions.bat",
-    "Webp Image Extensions":"files\_webp.bat",
-    "Xbox":"files\_xbox.bat",
-    "Your Phone":"files\_yourphone.bat",
+    "Clipchamp.Clipchamp":"Clipchamp",
+    "Microsoft.Print3D":"Print 3D",
+    "MicrosoftTeams":"Microsoft Teams",
+    "Microsoft.Todos":"Microsoft Todos",
+	"Microsoft.549981C3F5F10":"Cortana",
+	"Microsoft.BingWeather":"Bing Weather",
+	"Microsoft.DesktopAppInstaller":"App Installer",
+	"Microsoft.GetHelp":"Get Help",
+	"Microsoft.Getstarted":"Get Started",
+	"Microsoft.HEIFImageExtension":"HEIF Image Extension",
+	"Microsoft.Microsoft3DViewer":"3DViewer",
+	"Microsoft.MicrosoftOfficeHub":"OfficeHub",
+	"Microsoft.MicrosoftSolitaireCollection":"SolitaireCollection",
+	"Microsoft.MicrosoftStickyNotes":"StickyNotes",
+	"Microsoft.MixedReality.Portal":"Mixed Reality Portal",
+	"Microsoft.MSPaint":"Microsoft Paint",
+	"Microsoft.Office.OneNote":"Office OneNote",
+	"Microsoft.People":"Microsoft People",
+	"Microsoft.ScreenSketch":"Screen Sketch",
+	"Microsoft.SkypeApp":"Skype",
+	"Microsoft.StorePurchaseApp":"Store Purchase App",
+	"Microsoft.VP9VideoExtensions":"VP9 Video Extensions",
+	"Microsoft.Wallet":"Microsoft Wallet",
+	"Microsoft.WebMediaExtensions":"Web Media Extensions",
+    "Microsoft.RawImageExtension":"Raw Image Extension",
+	"Microsoft.WebpImageExtension":"Webp Image Extension",
+    "Microsoft.HEVCVideoExtension":"HEVC Video Extension",
+	"Microsoft.Windows.Photos":"Windows Photos",
+	"Microsoft.WindowsAlarms":"Windows Alarms",
+	"Microsoft.WindowsCalculator":"Windows Calculator",
+	"Microsoft.WindowsCamera":"Windows Camera",
+	"Microsoft.windowscommunicationsapps":"Communications Apps",
+	"Microsoft.WindowsFeedbackHub":"FeedbackHub",
+	"Microsoft.WindowsMaps":"Windows Maps",
+	"Microsoft.WindowsSoundRecorder":"Sound Recorder",
+	"Microsoft.WindowsStore":"Windows Store",
+	"Microsoft.Xbox.TCUI":"Xbox TCUI",
+	"Microsoft.XboxApp":"Xbox App",
+	"Microsoft.XboxGameOverlay":"Xbox Game Overlay",
+	"Microsoft.XboxGamingOverlay":"Xbox Gaming Overlay",
+	"Microsoft.XboxIdentityProvider":"Xbox Identity Provider",
+	"Microsoft.XboxSpeechToTextOverlay":"XboxSpeechToTextOverlay",
+	"Microsoft.YourPhone":"Your Phone",
+	"Microsoft.ZuneMusic":"Zune Music",
+	"Microsoft.ZuneVideo":"Zune Video",
 }
 
 WINDOW_TITLE = "Shades Debloater - Windows 10"
-WINDOW_MINSIZE = (1000, 420)
+WINDOW_MINSIZE = (780, 500)
 WINDOW_POSITION = (500, 250)
 root = tk.Tk()
 root.overrideredirect(True)
-root.maxsize(1000, 420)
+root.maxsize(780, 500)
 root.minsize(WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 root.geometry(str(WINDOW_MINSIZE[0]) + "x" + str(WINDOW_MINSIZE[1]) + "+" + str(WINDOW_POSITION[0]) + "+" + str(WINDOW_POSITION[1]))
 root.title(WINDOW_TITLE)
@@ -97,17 +88,20 @@ def toggle_all():
         var.set(not var.get())
 
 def apply_changes():
+    bat_file = open("remove_app.bat", "w")
+    bat_file.write("@echo off\nif not \"%1\"==\"am_admin\" (powershell start -verb runas '%0' am_admin & exit /b)\n")
     for app, var in checkboxes:
         if var.get():
-            subprocess.Popen(app_list[app], creationflags=subprocess.CREATE_NO_WINDOW)
-            time.sleep(7)
+            bat_file.write("PowerShell -ExecutionPolicy Unrestricted -Command \"Get-AppxPackage '" + app + "' | Remove-AppxPackage\"\n")
+    bat_file.close()
+    subprocess.Popen("remove_app.bat", creationflags=subprocess.CREATE_NO_WINDOW)
 
-for i, app in enumerate(app_list):
+for i, (key, value) in enumerate(app_list.items()):
     var = tk.IntVar()
-    checkbox = ttk.Checkbutton(app_frame, text=app, variable=var)
-    checkbox.grid(row=i//6, column=i%6, sticky="w")
-    checkboxes.append((app, var))
-    
+    checkbox = ttk.Checkbutton(app_frame, text=value, variable=var)
+    checkbox.grid(row=i//4, column=i%4, sticky="w")
+    checkboxes.append((key, var))
+
 grid_frame = ttk.Frame(big_frame)
 grid_frame.pack()
 grid_frame.columnconfigure(0, minsize=150)
