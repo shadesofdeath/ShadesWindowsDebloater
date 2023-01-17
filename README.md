@@ -31,8 +31,6 @@ Download Zip File
 Extract from archive to folder
 
 Run Shades Windows Debloater.pyw
-
-Disable UAC!
 ```
 ## License
 
