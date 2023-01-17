@@ -9,7 +9,7 @@
     A Python GUI for uninstalling the default Windows 10 apps.
 </p>
 
-##Screenshot
+## Screenshot
 ![](https://github.com/shadesofdeath/ShadesWindowsDebloater/raw/main/assets/screenshot.png)
 
 ## Features
