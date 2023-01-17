@@ -19,7 +19,6 @@ app_list = {
     "Calculator":"files\_calculator.bat",
     "Camera":"files\_camera.bat",
     "App Installer":"files\_DesktopAppInstaller.bat",
-    "Microsoft Edge":"files\_edge.bat",
     "Feedback Hub":"files\_feedbackhub.bat",
     "Get Help":"files\_GetHelp.bat",
     "Groove Music":"files\_groove.bat",
@@ -65,11 +64,11 @@ app_list = {
 }
 
 WINDOW_TITLE = "Shades Debloater - Windows 10"
-WINDOW_MINSIZE = (900, 450)
+WINDOW_MINSIZE = (1000, 420)
 WINDOW_POSITION = (500, 250)
 root = tk.Tk()
 root.overrideredirect(True)
-root.maxsize(900, 450)
+root.maxsize(1000, 420)
 root.minsize(WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 root.geometry(str(WINDOW_MINSIZE[0]) + "x" + str(WINDOW_MINSIZE[1]) + "+" + str(WINDOW_POSITION[0]) + "+" + str(WINDOW_POSITION[1]))
 root.title(WINDOW_TITLE)
@@ -106,7 +105,7 @@ def apply_changes():
 for i, app in enumerate(app_list):
     var = tk.IntVar()
     checkbox = ttk.Checkbutton(app_frame, text=app, variable=var)
-    checkbox.grid(row=i//5, column=i%5, sticky="w")
+    checkbox.grid(row=i//6, column=i%6, sticky="w")
     checkboxes.append((app, var))
     
 grid_frame = ttk.Frame(big_frame)
