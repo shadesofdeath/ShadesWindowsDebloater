@@ -10,7 +10,7 @@
 </p>
 
 ## Screenshot
-![](https://github.com/shadesofdeath/ShadesWindowsDebloater/raw/main/assets/screenshot.png)
+![](https://github.com/shadesofdeath/ShadesWindowsDebloater/raw/main/assets/Screenshot1.png)
 
 ## Features
 
