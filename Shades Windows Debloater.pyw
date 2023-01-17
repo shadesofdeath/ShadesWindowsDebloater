@@ -64,7 +64,7 @@ app_list = {
     "Your Phone":"files\_yourphone.bat",
 }
 
-WINDOW_TITLE = "Shades Windows Debloater - Windows 10/11"
+WINDOW_TITLE = "Shades Debloater - Windows 10"
 WINDOW_MINSIZE = (900, 450)
 WINDOW_POSITION = (500, 250)
 root = tk.Tk()
@@ -101,6 +101,7 @@ def apply_changes():
     for app, var in checkboxes:
         if var.get():
             subprocess.Popen(app_list[app], creationflags=subprocess.CREATE_NO_WINDOW)
+            time.sleep(7)
 
 for i, app in enumerate(app_list):
     var = tk.IntVar()
